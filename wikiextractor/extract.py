@@ -379,14 +379,17 @@ wgUrlProtocols = [
 # \p{Zs} is unicode 'separator, space' category. It covers the space 0x20
 # as well as U+3000 is IDEOGRAPHIC SPACE for bug 19052
 EXT_LINK_URL_CLASS = r'[^][<>"\x00-\x20\x7F\s]'
-ExtLinkBracketedRegex = re.compile(
-    '\[(((?i)' + '|'.join(wgUrlProtocols) + ')' + EXT_LINK_URL_CLASS + r'+)\s*([^\]\x00-\x08\x0a-\x1F]*?)\]',
-    re.S | re.U)
+# ExtLinkBracketedRegex = re.compile(
+#     '\[(((?i)' + '|'.join(wgUrlProtocols) + ')' + EXT_LINK_URL_CLASS + r'+)\s*([^\]\x00-\x08\x0a-\x1F]*?)\]',
+#     re.S | re.U)
+# EXT_IMAGE_REGEX = re.compile(
+#     r"""^(http://|https://)([^][<>"\x00-\x20\x7F\s]+)
+#     /([A-Za-z0-9_.,~%\-+&;#*?!=()@\x80-\xFF]+)\.((?i)gif|png|jpg|jpeg)$""",
+#     re.X | re.S | re.U)
+ExtLinkBracketedRegex = re.compile(r'(?i)\[(?:[^[]+?)\[(.+?)\](?:[^[]+?)\]')
 EXT_IMAGE_REGEX = re.compile(
-    r"""^(http://|https://)([^][<>"\x00-\x20\x7F\s]+)
-    /([A-Za-z0-9_.,~%\-+&;#*?!=()@\x80-\xFF]+)\.((?i)gif|png|jpg|jpeg)$""",
-    re.X | re.S | re.U)
-
+    r'(?i)(?s)(?:(?:image|img|media):+|\[\[)(?P<image>[^\n[]+?\.(?:gif|GIF|jpg|JPG|jpeg|JPEG|png|PNG|tif|TIF|tiff|TIFF|svg|SVG|xcf|XCF|pdf|PDF|webp|WEBP))\]\]'
+)
 
 def replaceExternalLinks(text):
     s = ''
